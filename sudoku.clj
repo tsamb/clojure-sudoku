@@ -21,7 +21,19 @@
   (mod i 9))
 
 (defn col-slice [i]
-  (map (fn [el] (+ el (col-start i))) [0 9 18 27 36 45 54 63 72]))
+  (mapv (fn [num] (+ num (col-start i))) [0 9 18 27 36 45 54 63 72]))
+
+(defn box-col [i]
+  (mod (quot i 3) 3))
+
+(defn box-row [i]
+  (quot i 27))
+
+(defn box-start [i]
+  (+ (* (box-col i) 3) (* (box-row i) 27)))
+
+(defn box-slice [i]
+  (mapv (fn [num] (+ (box-start i) num)) [0 1 2 9 10 11 18 19 20]))
 
 (defn str-to-board [input-board]
     (mapv to-possibles
@@ -39,7 +51,9 @@
 
 
 
-; Done: converts each char of an input string into a set of possibilities and adds vector positionality
+; DONE:
+; Converts each char of an input string into a set of possibilities and adds vector positionality
+; Calculates indices of rows, columns and boxes based on a given index
 ; TODO:
 ; Given a position, return all the confirmed possibles based on column, row and box
 ; Turn all confirmed possibles from col, row and box into a set
