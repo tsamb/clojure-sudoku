@@ -1,4 +1,4 @@
-(ns sudoku)
+; (ns sudoku)
 (require '[clojure.string :as str])
 (require '[clojure.set :as set])
 
@@ -8,8 +8,20 @@
 (defn confirmed? [possibles]
   (= (count possibles) 1))
 
-(defn rows [i]
-  (range i (+ i 9)))
+(defn row-start [i]
+  (* 9 (quot i 9)))
+
+(defn row-slice [i]
+  (vec (range (row-start i) (+ 9 (row-start i)))))
+
+(defn row-values [board i]
+  (mapv board (row-slice i)))
+
+(defn col-start [i]
+  (mod i 9))
+
+(defn col-slice [i]
+  (map (fn [el] (+ el (col-start i))) [0 9 18 27 36 45 54 63 72]))
 
 (defn str-to-board [input-board]
     (mapv to-possibles
@@ -18,12 +30,13 @@
 
 (defn input [] "...28.94.1.4...7......156.....8..57.4.......8.68..9.....196......5...8.3.43.28...")
 
-(str-to-board (input))
-
 (map-indexed (fn [i possible]
   i
   )
     (str-to-board (input)))
+
+(str-to-board (input))
+
 
 
 ; Done: converts each char of an input string into a set of possibilities and adds vector positionality
